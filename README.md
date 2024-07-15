@@ -32,7 +32,7 @@ try {
 	triggerError.call(Function.prototype.bind);
 
 	// trigger the detection function if an error is NOT thrown
-	// this probably means something is interfering with the error handling
+	// if the code above didn't cause and error and stop this code then it would mean that the client is tampering with the error handling
 	detected();
 } catch (error) {
 	// trigger the detection function if a function proxy is present in the stack trace

@@ -45,3 +45,17 @@ try {
 Error.stackTraceLimit = lim;
 
 ```
+
+## Miscellaneous shenanigans
+
+### Determining if a credential logger is present
+You can determine whether the fsploit version you are currently using is safe or not by running the following code in the browser console.
+
+```js
+XMLHttpRequest.prototype.open.toString() !== "function open() { [native code] }"
+```
+
+If the code returns true, it means your requests are being intercepted by a potentially malicious script. 
+
+For more information about how the credential logger works, see [`files/xhr hook.js`](https://github.com/akanecco23/fsploit-patch/blob/main/files/xhr%20hook.js). This has the deobfuscated version of the credential logger used in fsploit. It has been taken directly from fsploit's obfuscated code.
+![Obfuscated fsploit credential logger](https://github.com/user-attachments/assets/95cb20be-7b93-4e53-9eed-53088317f341)

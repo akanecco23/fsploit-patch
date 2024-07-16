@@ -44,7 +44,27 @@ try {
 // restore the original Error.stackTraceLimit
 Error.stackTraceLimit = lim;
 
+```js
+// first, make a backup of the original Error.stackTraceLimit
+const lim = Error.stackTraceLimit;
+
+Error.stackTraceLimit = 1;
+
+try {
+	// Forces an error to be thrown which will include the actual toString of the bind function (bypassing toString hook)
+	Function.prototype.bind in 0
+} catch(error) {
+	// Detection: if it is hooked by a non proxy function then the error message wouldn't include the original function.bind toString
+	if (!error.stack.includes("function bind() { [native code] }")) {
+		Detected();
+	}
+}
+
+// restore the original Error.stackTraceLimit
+Error.stackTraceLimit = lim;
 ```
+
+in the case of fsploit switching from proxy hooks to regular function hooks you can use this
 
 ## Miscellaneous shenanigans
 

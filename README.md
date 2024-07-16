@@ -59,3 +59,15 @@ If the code returns true, it means your requests are being intercepted by a pote
 
 For more information about how the credential logger works, see [`files/xhr hook.js`](https://github.com/akanecco23/fsploit-patch/blob/main/files/xhr%20hook.js). This has the deobfuscated version of the credential logger used in fsploit. It has been taken directly from fsploit's obfuscated code.
 ![Obfuscated fsploit credential logger](https://github.com/user-attachments/assets/95cb20be-7b93-4e53-9eed-53088317f341)
+
+### Restoring console.log()
+fsploit nullifies console.log() in order to make it harder to deobfuscate its code. You can restore console.log() by running the following code in the browser console.
+
+```js
+(() => {
+    const i = document.createElement("iframe");
+    i.style.display = "none";
+    document.body.appendChild(i);
+    window.console = i.contentWindow.console
+})();
+```

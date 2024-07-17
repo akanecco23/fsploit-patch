@@ -47,19 +47,34 @@ Error.stackTraceLimit = lim;
 ## Detection of non proxy hooked functions
 in the case of fsploit switching from proxy hooks to regular function hooks you can use this
 
+> [!CAUTION]
+> This does not work on Gecko (Firefox) and will produce a false positive. 
+
 ```js
 // first, make a backup of the original Error.stackTraceLimit
 const lim = Error.stackTraceLimit;
 
 Error.stackTraceLimit = 1;
 
+// function to be executed if a game object injector is present
+function detected() {
+	// this is just fancy styling for the console message
+	console.log(
+		"%cGame object injector detected!",
+		"font-family:quicksand;font-weight:bold;color:white;font-size:125%;background:#f00;padding:4px 12px 4px 8px;border-radius:0 16px 16px 0;border-left:8px #800 solid"
+	);
+
+	// do something to ban the user
+	// ...
+}
+
 try {
 	// Forces an error to be thrown which will include the actual toString of the bind function (bypassing toString hook)
 	Function.prototype.bind in 0
 } catch(error) {
 	// Detection: if it is hooked by a non proxy function then the error message wouldn't include the original function.bind toString
-	if (!error.stack.includes("function bind() { [native code] }")) {
-		Detected();
+	if (!error.stack.replaceAll(/(?<={|])(\n? *)/g, "").includes("function bind() { [native code] }")) {
+		detected();
 	}
 }
 

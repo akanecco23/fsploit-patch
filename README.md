@@ -73,7 +73,7 @@ try {
 	Function.prototype.bind in 0
 } catch(error) {
 	// Detection: if it is hooked by a non proxy function then the error message wouldn't include the original function.bind toString
-	if (!error.stack.replaceAll(/(?<={|])(\n? *)/g, "").includes("function bind() { [native code] }")) {
+	if (!error.stack.replaceAll(/(?<={ | ])(\n? *)/g, "").includes("function bind() { [native code] }")) {
 		detected();
 	}
 }
